@@ -1,0 +1,26 @@
+/* PayoutManagement.css */
+.payout-management-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  h1 {
+    color: #4a5568;
+  }
+  
+  h2 {
+    color: #2d3748;
+  }
+  
+  .text-gray-600 {
+    color: #4a5568;
+  }
+  
+  .bg-blue-500 {
+    background-color: #4299e1;
+  }
+  
+  .text-green-500 {
+    color: #48bb78;
+  }
+  
