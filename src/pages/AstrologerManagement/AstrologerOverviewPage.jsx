@@ -11,7 +11,7 @@ import AddPage from './AddPage';
 import EditAstrologerData from './EditAstrologerData';
 import CreateAstrologer from './CreateAstrologer';
 import EditMenu from '../../components/DropdownEditMenu';
-
+import SupportTickets from './supportsTicketsAst';
 
 
 const AstrologerOverviewPage = () => {
