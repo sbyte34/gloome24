@@ -13,6 +13,8 @@ import Support from './pages/UserManagement/supportTickets';
 import Astrologer from './pages/AstrologerManagement/AstrologerOverviewPage'
 import AstrologerSchedule from './pages/AstrologerSchedulePage';
 import AstrologerPayoutManagement from './pages/AstrologerPayout'
+import SupportTickets from './pages/AstrologerManagement/supportsTicketsAst';
+
 function App() {
 
   const location = useLocation();
@@ -35,6 +37,7 @@ function App() {
         <Route exact path="/astrologer/*" element={<Astrologer />} />
         <Route exact path="/astrologerschedule" element={<AstrologerSchedule/>} />
         <Route exact path="/astrologerpayout" element={<AstrologerPayoutManagement/>} />
+        <Route exact path="/supportTickets" element={<SupportTickets/>} />
 
       </Routes>
     </>

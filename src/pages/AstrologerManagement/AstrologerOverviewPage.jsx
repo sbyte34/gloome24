@@ -12,6 +12,7 @@ import EditAstrologerData from './EditAstrologerData';
 import CreateAstrologer from './CreateAstrologer';
 import EditMenu from '../../components/DropdownEditMenu';
 import SupportTickets from './supportsTicketsAst';
+import AddAstrologer from './AddAstrologer';
 
 
 const AstrologerOverviewPage = () => {
@@ -121,10 +122,10 @@ const AstrologerOverviewPage = () => {
                             className="modal" // Use the custom modal class
                             overlayClassName="modal-overlay"
                         >
-                            <AddPage closeModal={closeModal} />
+                            <AddAstrologer closeModal={closeModal} />
                         </Modal>
                         <Routes>
-                            <Route path="/add" element={<AddPage />} />
+                            <Route path="/add" element={<AddAstrologer />} />
                         </Routes>            {/* Cards */}
 
                         <div className="col-span-full xl:col-span-8 bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
@@ -182,41 +183,40 @@ const AstrologerOverviewPage = () => {
                                             {/* Rows dynamically generated based on data */}
                                             {data.map((user, index) => (
                                                 <tr key={index}>
-                                                    {/* <tr> */}
-                                                    <td className="p-2">
-                                                        <div className="flex items-center">
-                                                            <div className="text-slate-800 dark:text-slate-100">{user.email
-}</div>
-                                                        </div>
-                                                    </td>
-                                                    <td className="p-2">
-                                                        <div className="text-center">{user.name}</div>
-                                                    </td>
-                                                    <td className="p-2">
-                                                        <div className="text-center">{user.phone_number}</div>
-                                                    </td>
-                                                    <td className="p-2">
-                                                        <div className="text-center">{user.specialization
-}</div>
-                                                    </td>
-                                                   
-                                                    <td className="p-2">
-                                                        <div className="text-center">{user.YearsOfExperience}</div>
-                                                    </td>
-                                                    <td className="p-2">
-                                                        <div className="text-center">{user.Rating
-}</div>
-                                                    </td>
-                                                    <td className="p-2">
-                                                        <div className="text-center">{user.bio
-}</div>
-                                                    </td>
-                                                    <td className="p-2">
-                                                        <div className="text-center">{user.createdAt}</div>
-                                                    </td>
-                                                    <td className="p-2">
-                                                        <div className="text-center">{user.updatedAt}</div>
-                                                    </td>
+                                                <td className="p-2">
+                                                    <div className="flex items-center">
+                                                        <div className="text-slate-800 dark:text-slate-100">{user.data.email}</div>
+                                                    </div>
+                                                </td>
+                                                <td className="p-2">
+                                                    <div className="text-center">{user.data.name}</div>
+                                                </td>
+                                                <td className="p-2">
+                                                    <div className="text-center">{user.data.phone_number}</div>
+                                                </td>
+                                                <td className="p-2">
+                                                    <div className="text-center">{user.data.specialization}</div>
+                                                </td>
+                                                <td className="p-2">
+                                                    <div className="text-center">{user.data.YearsOfExperience}</div>
+                                                </td>
+                                                <td className="p-2">
+                                                    <div className="text-center">{user.data.Rating}</div>
+                                                </td>
+                                                <td className="p-2">
+                                                    <div className="text-center">{user.data.bio}</div>
+                                                </td>
+                                                <td className="p-2">
+                                                    <div className="text-center">{user.data.createdAt}</div>
+                                                </td>
+                                                <td className="p-2">
+                                                    <div className="text-center">{user.data.updatedAt}</div>
+                                                </td>
+                                                <td className="p-2">
+                                                    <div className="flex justify-center space-x-2">
+                                                        {/* Your other actions here */}
+                                                    </div>
+                                                </td>
                                                     <td className="p-2">
                                                         <div className="flex justify-center space-x-2">
                                                             <div className="cursor-pointer" onClick={() => handleDropdownToggle(user._id)}>
