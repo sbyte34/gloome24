@@ -14,6 +14,7 @@ import Astrologer from './pages/AstrologerManagement/AstrologerOverviewPage'
 import AstrologerSchedule from './pages/AstrologerSchedulePage';
 import AstrologerPayoutManagement from './pages/AstrologerPayout'
 import SupportTickets from './pages/AstrologerManagement/supportsTicketsAst';
+import Earning from './pages/FinanceManagement/earning';
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
         <Route exact path="/astrologerschedule" element={<AstrologerSchedule/>} />
         <Route exact path="/astrologerpayout" element={<AstrologerPayoutManagement/>} />
         <Route exact path="/supportTickets" element={<SupportTickets/>} />
+        <Route exact path="/earning" element={<Earning/>} />
 
       </Routes>
     </>
