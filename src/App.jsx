@@ -15,6 +15,13 @@ import AstrologerSchedule from './pages/AstrologerSchedulePage';
 import AstrologerPayoutManagement from './pages/AstrologerPayout'
 import SupportTickets from './pages/AstrologerManagement/supportsTicketsAst';
 import Earning from './pages/FinanceManagement/earning';
+import PaymentGateWay from './pages/FinanceManagement/PaymentGateWay';
+import TransactionDetails from './pages/FinanceManagement/TransactionDetails';
+import Reporting from './pages/FinanceManagement/Reporting';
+import CallRate from './pages/ServiceManagement/CallRate';
+import MessageRate from './pages/ServiceManagement/MessageRate';
+import LiveSessionRate from './pages/ServiceManagement/LiveSessionRate';
+import OffersDiscounts from './pages/ServiceManagement/OffersDiscounts';
 
 function App() {
 
@@ -40,6 +47,13 @@ function App() {
         <Route exact path="/astrologerpayout" element={<AstrologerPayoutManagement/>} />
         <Route exact path="/supportTickets" element={<SupportTickets/>} />
         <Route exact path="/earning" element={<Earning/>} />
+        <Route exact path="/paymentgateway" element={<PaymentGateWay/>} />
+        <Route exact path="/finance/transaction-details" element={<TransactionDetails/>} />
+        <Route exact path="/finance/reporting" element={<Reporting/>} />
+        <Route exact path="/callrate" element={<CallRate/>} />
+        <Route exact path="/messagerate" element={<MessageRate/>} />
+        <Route exact path="/livesessionrate" element={<LiveSessionRate/>} />
+        <Route exact path="/offersdiscounts" element={<OffersDiscounts/>} />
 
       </Routes>
     </>
