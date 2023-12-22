@@ -22,6 +22,9 @@ import CallRate from './pages/ServiceManagement/CallRate';
 import MessageRate from './pages/ServiceManagement/MessageRate';
 import LiveSessionRate from './pages/ServiceManagement/LiveSessionRate';
 import OffersDiscounts from './pages/ServiceManagement/OffersDiscounts';
+import OrderManagement from './pages/E-CommerceManagement/OrderManagement';
+import ProductManagement from './pages/E-CommerceManagement/ProductManagement';
+import PayRefund from './pages/E-CommerceManagement/PayRefund';
 
 function App() {
 
@@ -54,6 +57,9 @@ function App() {
         <Route exact path="/messagerate" element={<MessageRate/>} />
         <Route exact path="/livesessionrate" element={<LiveSessionRate/>} />
         <Route exact path="/offersdiscounts" element={<OffersDiscounts/>} />
+        <Route exact path="/ordermanagement" element={<OrderManagement/>} />
+        <Route exact path="/productmanagement" element={<ProductManagement/>} />
+        <Route exact path="/payrefund" element={<PayRefund/>} />
 
       </Routes>
     </>
