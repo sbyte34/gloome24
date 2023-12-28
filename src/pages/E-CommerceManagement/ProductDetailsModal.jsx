@@ -1,47 +1,65 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import './ProductDetailsModal.css'; // Import the CSS file for additional styling
 
 const ProductDetailsModal = ({ product, onClose, onDelete, onUpdate }) => {
-  const [updatedProduct, setUpdatedProduct] = useState({ ...product });
+  const [updatedProduct, setUpdatedProduct] = useState({
+    ...product,
+    name: product.name || '',
+    quantity: product.quantity || 0,
+    images: product.images || [],
+  });
 
-  const handleUpdate = async () => {
-    try {
-      // Make an API call to update the product
-      const response = await fetch(
-        `http://ec2-13-233-152-110.ap-south-1.compute.amazonaws.com:5000/updateproductByid/${product._id}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(updatedProduct),
-        }
-      );
+  // ... (existing code)
 
-      if (response.ok) {
-        // If the update is successful, trigger the onUpdate callback
-        onUpdate(updatedProduct);
-        // Close the modal
-        onClose();
-      } else {
-        console.error('Failed to update product:', response.statusText);
-        // Handle the error accordingly (e.g., show an error message to the user)
-      }
-    } catch (error) {
-      console.error('Error updating product:', error);
+const handleUpdate = async () => {
+  try {
+    const url = `http://ec2-13-233-152-110.ap-south-1.compute.amazonaws.com:5000/product/updateproductByid/${product._id}`;
+
+    // Your Bearer token goes here
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1N2M2NGRjMGU3MWYxYzVmNGUwM2RiMSIsImVtYWlsIjoid2FzZWVtQGdtYWlsLmNvbSIsImlhdCI6MTcwMzc4ODI3MX0.1JTIgP6eDuhocVxwtGnviszdPwFNHzRgz2p9nSOoy-A';
+
+    const response = await axios.put(url, updatedProduct, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    // console.log('Block 1');
+
+    if (response.status === 200) {
+      // If the update is successful, trigger the onUpdate callback
+      onUpdate(updatedProduct);
+      // Close the modal
+      onClose();
+    } else {
+      console.error('Failed to update product:', response.statusText);
+      // Handle the error accordingly (e.g., show an error message to the user)
     }
-  };
+  } catch (error) {
+    console.error('Error updating product:', error);
+  }
+};
+
+// ... (existing code)
+
 
   const handleDelete = async () => {
     try {
-      // Make an API call to delete the product
-      const response = await fetch(
-        `http://ec2-13-233-152-110.ap-south-1.compute.amazonaws.com:5000/product/deleteproductByid/${product._id}`,
-        {
-          method: 'DELETE',
-        }
-      );
+      const url = `http://ec2-13-233-152-110.ap-south-1.compute.amazonaws.com:5000/product/deleteproductByid/${product._id}`;
 
-      if (response.ok) {
+      // Your Bearer token goes here
+      const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1N2M2NGRjMGU3MWYxYzVmNGUwM2RiMSIsImVtYWlsIjoid2FzZWVtQGdtYWlsLmNvbSIsImlhdCI6MTcwMzcxMDEwNn0.xO46SiJ82Ds1DoDxjls7JCy9a1sahuc3CseAm41ySss';
+
+      const response = await axios.delete(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      // console.log(response.status);
+
+      if (response.status === 200) {
         // If the deletion is successful, trigger the onDelete callback
         onDelete(product._id);
         // Close the modal
@@ -55,105 +73,131 @@ const ProductDetailsModal = ({ product, onClose, onDelete, onUpdate }) => {
     }
   };
 
+  // ... (other functions)
+
   const handleChange = (e) => {
-    // Update the state with the changed value
-    const { name, value } = e.target;
-    setUpdatedProduct((prevProduct) => ({
-      ...prevProduct,
-      [name]: value,
-    }));
+    const { name, value, type } = e.target;
+  
+    if (type === 'file') {
+      const files = e.target.files;
+      const fileArray = Array.from(files);
+  
+      // Create an array of file objects with additional URL properties
+      const updatedFiles = fileArray.map((file) => ({
+        file,
+        url: URL.createObjectURL(file),
+      }));
+  
+      setUpdatedProduct((prevProduct) => ({
+        ...prevProduct,
+        [name]: updatedFiles,
+      }));
+    } else {
+      setUpdatedProduct((prevProduct) => ({
+        ...prevProduct,
+        [name]: type === 'number' ? parseFloat(value) : value,
+      }));
+    }
+  };
+  
+  
+
+  // Calculate discount based on selling price and MRP
+  const calculateDiscount = () => {
+    const { selling_price, MRP } = updatedProduct;
+    if (MRP > 0) {
+      return ((MRP - selling_price) / MRP) * 100;
+    }
+    return 0;
   };
 
   return (
-    <div className="fixed inset-0 overflow-y-auto">
-      <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div className="fixed inset-0 transition-opacity">
-          <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+    <div className="modal-overlay">
+      <div className="modal-container">
+        <div className="modal-header">
+          <h3 className="modal-title">{product.name} Details</h3>
         </div>
-
-        <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>&#8203;
-
-        <div
-          className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="modal-headline"
-        >
-          <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-            <div className="sm:flex sm:items-start">
-              <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-headline">
-                  {product.name} Details
-                </h3>
-                <div className="mt-2">
-                  <p className="text-sm text-gray-600 mb-2">
-                    Description:
-                    <br />
-                    <textarea
-                      name="description"
-                      value={updatedProduct.description}
-                      onChange={handleChange}
-                      className="w-full border rounded-md p-2"
-                    />
-                  </p>
-                  <p className="text-lg text-green-500 font-semibold mb-2">
-                    Selling Price: ₹
-                    <input
-                      type="number"
-                      name="selling_price"
-                      value={updatedProduct.selling_price}
-                      onChange={handleChange}
-                      className="border rounded-md p-2"
-                    />
-                  </p>
-                  <p className="text-sm text-gray-600 mb-2">
-                    MRP: ₹
-                    <input
-                      type="number"
-                      name="MRP"
-                      value={updatedProduct.MRP}
-                      onChange={handleChange}
-                      className="border rounded-md p-2"
-                    />
-                  </p>
-                  <p className="text-sm text-gray-600 mb-2">
-                    Discount:
-                    <input
-                      type="number"
-                      name="discount"
-                      value={updatedProduct.discount}
-                      onChange={handleChange}
-                      className="border rounded-md p-2"
-                    />
-                    % Off
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-            <button
-              onClick={handleDelete}
-              type="button"
-              className="w-full inline-flex justify-center rounded-md border border-red-500 shadow-sm px-4 py-2 bg-red-500 text-base font-medium text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-            >
-              Delete
-            </button>
-            <button
-              onClick={handleUpdate}
-              type="button"
-              className="w-full inline-flex justify-center rounded-md border border-blue-500 shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
-            >
-              Update
-            </button>
-            <button
-              onClick={onClose}
-              type="button"
-              className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
-            >
-              Close
-            </button>
-          </div>
+        <div className="modal-body">
+          <p>
+            Name:
+            <br />
+            <input
+              type="text"
+              name="name"
+              value={updatedProduct.name}
+              onChange={handleChange}
+              className="modal-input"
+            />
+          </p>
+          <p>
+            MRP: ₹
+            <input
+              type="number"
+              name="MRP"
+              value={updatedProduct.MRP}
+              onChange={handleChange}
+              className="modal-input"
+            />
+          </p>
+          <p>
+            Selling Price: ₹
+            <input
+              type="number"
+              name="selling_price"
+              value={updatedProduct.selling_price}
+              onChange={handleChange}
+              className="modal-input"
+            />
+          </p>
+          <p>
+            Quantity:
+            <br />
+            <input
+              type="number"
+              name="quantity"
+              value={updatedProduct.quantity}
+              onChange={handleChange}
+              className="modal-input"
+            />
+          </p>
+          <p>
+            Description:
+            <br />
+            <textarea
+              name="description"
+              value={updatedProduct.description}
+              onChange={handleChange}
+              className="modal-input"
+              rows="6"
+              cols="60"
+            />
+          </p>
+          <p>
+            Images:
+            <br />
+            <input
+              type="file"
+              name="images"
+              onChange={handleChange}
+              className="modal-input"
+              multiple  // Allow multiple file selection
+            />
+          </p>
+          <p>
+            Discount: {calculateDiscount().toFixed(2)}%
+          </p>
+          {/* ... (other fields) */}
+        </div>
+        <div className="modal-footer">
+          <button onClick={handleDelete} className="delete-button">
+            Delete
+          </button>
+          <button onClick={handleUpdate} className="update-button">
+            Update
+          </button>
+          <button onClick={onClose} className="close-button">
+            Close
+          </button>
         </div>
       </div>
     </div>

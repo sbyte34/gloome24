@@ -1,63 +1,108 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
-const AddPage = ({ onClose }) => {
+const api = axios.create({
+  baseURL: 'http://ec2-13-233-152-110.ap-south-1.compute.amazonaws.com:5000',
+});
+
+const AddPage = ({ onClose, onCreateProduct }) => {
   const [formData, setFormData] = useState({
     name: '',
+    selling_price: '',
     MRP: '',
-    discount: '',
     quantity: '',
     description: '',
     images: null,
+    discount: 0,
   });
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
 
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: type === 'file' ? files[0] : value,
-    }));
+    if (type === 'file') {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: files[0],
+      }));
+    } else {
+      const sellingPrice = name === 'selling_price' ? parseFloat(value) : formData.selling_price;
+      const MRP = name === 'MRP' ? parseFloat(value) : formData.MRP;
+
+      if (!isNaN(sellingPrice) && !isNaN(MRP)) {
+        const discount = MRP && sellingPrice ? ((MRP - sellingPrice) / MRP) * 100 : 0;
+
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+          discount: isNaN(discount) ? 0 : parseFloat(discount.toFixed(2)),
+        }));
+      } else {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+          discount: 0,
+        }));
+      }
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!formData.name || !formData.selling_price || !formData.MRP || !formData.quantity) {
+      console.error('Please fill in all required fields.');
+      return;
+    }
+
     try {
       const formDataWithImage = new FormData();
       formDataWithImage.append('name', formData.name);
+      formDataWithImage.append('selling_price', formData.selling_price);
       formDataWithImage.append('MRP', formData.MRP);
-      formDataWithImage.append('discount', formData.discount);
       formDataWithImage.append('quantity', formData.quantity);
-      formDataWithImage.append('description', formData.description);
-      formDataWithImage.append('images', formData.images);
 
-      const response = await fetch('http://ec2-13-233-152-110.ap-south-1.compute.amazonaws.com:5000/product/createproducts', {
-        method: 'POST',
-        body: formDataWithImage,
+      if (formData.description) {
+        formDataWithImage.append('description', formData.description);
+      }
+
+      if (formData.images) {
+        formDataWithImage.append('images', formData.images);
+      }
+
+      const accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1N2M2NGRjMGU3MWYxYzVmNGUwM2RiMSIsImVtYWlsIjoid2FzZWVtQGdtYWlsLmNvbSIsImlhdCI6MTcwMzc4MjQwMH0.ItjP8uNIPU2kqa51GTmbFb6pk7_a5jSCi0O4x5k4d3I'; // Replace with your actual access token
+
+      const response = await api.post('/product/createproducts', formDataWithImage, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
-      if (response.ok) {
-        const data = await response.json();
+      // console.log(response.status);
+
+      if (response.status === 200) {
+        const data = response.data;
         console.log('Product created successfully:', data);
 
-        // Close the modal or take any other necessary action
+        onCreateProduct(data);
+
         onClose();
       } else {
         console.error('Failed to create product');
       }
     } catch (error) {
-      console.error('Error creating product:', error);
+      if (axios.isAxiosError(error)) {
+        console.error('Axios error:', error);
+      } else {
+        console.error('Error creating product:', error);
+      }
+
+      if (error.response) {
+        console.error('Server response:', error.response.data);
+      }
     }
   };
 
-  const calculateSellingPrice = () => {
-    // Calculate selling price after discount based on your logic
-    const mrp = parseFloat(formData.MRP);
-    const discount = parseFloat(formData.discount);
-    const discountedPrice = mrp - (mrp * discount) / 100;
-
-    return discountedPrice.toFixed(2);
-  };
 
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex items-center justify-center">
@@ -91,6 +136,21 @@ const AddPage = ({ onClose }) => {
               required
             />
           </div>
+          {/* Other form fields (similar structure) */}
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="selling_price">
+              Selling Price
+            </label>
+            <input
+              type="text"
+              id="selling_price"
+              name="selling_price"
+              value={formData.selling_price}
+              onChange={handleChange}
+              className="border rounded-md w-full py-2 px-3"
+              required
+            />
+          </div>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="MRP">
               MRP
@@ -100,20 +160,6 @@ const AddPage = ({ onClose }) => {
               id="MRP"
               name="MRP"
               value={formData.MRP}
-              onChange={handleChange}
-              className="border rounded-md w-full py-2 px-3"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="discount">
-              Discount
-            </label>
-            <input
-              type="text"
-              id="discount"
-              name="discount"
-              value={formData.discount}
               onChange={handleChange}
               className="border rounded-md w-full py-2 px-3"
               required
@@ -143,7 +189,6 @@ const AddPage = ({ onClose }) => {
               value={formData.description}
               onChange={handleChange}
               className="border rounded-md w-full py-2 px-3"
-              required
             />
           </div>
           <div className="mb-4">
@@ -157,7 +202,19 @@ const AddPage = ({ onClose }) => {
               accept="image/*"
               onChange={handleChange}
               className="border rounded-md w-full py-2 px-3"
-              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="discount">
+              Discount (%)
+            </label>
+            <input
+              type="text"
+              id="discount"
+              name="discount"
+              value={formData.discount}
+              className="border rounded-md w-full py-2 px-3"
+              readOnly
             />
           </div>
           <button
@@ -167,14 +224,6 @@ const AddPage = ({ onClose }) => {
             Create Product
           </button>
         </form>
-
-        {/* Display selling price after discount */}
-        {formData.MRP && formData.discount && (
-          <div className="mt-4">
-            <p className="text-gray-700 text-sm font-bold mb-2">Selling Price After Discount:</p>
-            <p>${calculateSellingPrice()}</p>
-          </div>
-        )}
       </div>
     </div>
   );

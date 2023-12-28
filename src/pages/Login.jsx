@@ -8,7 +8,7 @@ const Login = () => {
     const history = useNavigate();
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://ec2-13-233-152-110.ap-south-1.compute.amazonaws.com:5000/auth/loginAdmin', {
+      const response = await fetch('http://ec2-13-233-152-110.ap-south-1.compute.amazonaws.com:5000/admin/loginAdmin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

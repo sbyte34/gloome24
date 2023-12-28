@@ -1,35 +1,77 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Sidebar from '../../partials/Sidebar';
 import Header from '../../partials/Header';
 
 const OrderManagement = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [orders, setOrders] = useState([]);
 
-  return (
-    <>
-      <div className="flex h-screen overflow-hidden">
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJhNmM3MDY0MDIyZTc2ZWI5NWE3MiIsImlhdCI6MTcwMzA2MjEwMX0.N75dcp9-EN89LXMdNDcCIoR48Ol3vA11AcdBYQgfGAg'; // Replace with the actual bearer token
+        const response = await axios.get('http://ec2-13-233-152-110.ap-south-1.compute.amazonaws.com:5000/order/list', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-        {/* Sidebar */}
-        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        setOrders(response.data.payload);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+        console.error('Response:', error.response); // Log the full response for more details
+      }
+    };
 
-        {/* Content area */}
-        <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+    fetchOrders();
+  }, []);  
 
-          {/* Site header */}
-          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+  // ... (previous code)
 
-          <main>
-            {/* Your content goes here */}
-            <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-              <h1>Order Management</h1>
-              {/* Other order management content */}
+return (
+  <>
+    <div className="flex h-screen overflow-hidden">
+      {/* Sidebar */}
+      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+
+      {/* Content area */}
+      <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-gray-100">
+        {/* Site header */}
+        <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+
+        <main>
+          <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+            <div className="sm:flex sm:justify-between sm:items-center mb-8">
+              <div className="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
+                {/* Add any additional components or filters related to order management here */}
+              </div>
             </div>
-          </main>
 
-        </div>
+            <div className="grid grid-cols-12 gap-6">
+              {/* Render order details */}
+              {orders.map((order) => (
+                <div key={order._id} className="col-span-12 sm:col-span-6 lg:col-span-4 p-4 bg-white rounded-md shadow-md">
+                  {/* Render order information */}
+                  <p className="text-lg font-semibold mb-2">Order ID: {order._id}</p>
+                  <p>Status: <span className={`capitalize ${order.status === 'processing' ? 'text-green-600' : 'text-yellow-600'}`}>{order.status}</span></p>
+                  <p>Total Amount: ${order.totalAmount.toFixed(2)}</p>
+                  <p>Customer ID: {order.customer}</p>
+                  <p>Shipping Address: {order.shippingAddress}</p>
+                  <p>Payment Method: {order.paymentMethod}</p>
+                  <p>Created At: {new Date(order.createdAt).toLocaleString()}</p>
+                  <p>Updated At: {new Date(order.updatedAt).toLocaleString()}</p>
+                  {/* Add more details as needed */}
+                </div>
+              ))}
+            </div>
+          </div>
+        </main>
       </div>
-    </>
-  );
+    </div>
+  </>
+);
+
 };
 
 export default OrderManagement;
