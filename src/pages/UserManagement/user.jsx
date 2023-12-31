@@ -138,6 +138,9 @@ const user = () => {
                           <div className="font-semibold text-center">City</div>
                         </th>
                         <th className="p-2">
+                          <div className='front-semibold text-cebter'>Gender</div>
+                          </th>
+                        <th className="p-2">
                           <div className="font-semibold text-center">Actions</div>
                         </th>
                       </tr>
@@ -164,48 +167,10 @@ const user = () => {
                           <td className="p-2">
                             <div className="text-center">{user.city}</div>
                           </td>
+                          <td className="p-2">
+                            <div className="text-center">{user.gender}</div>
+                          </td>
                           <td className="p-2" align="center">
-                            {/* <div className="flex justify-center space-x-2">
-                              <div className="cursor-pointer" onClick={() => handleDropdownToggle(user.userId)}>
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                  className="h-5 w-5"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                                  />
-                                </svg>
-                              </div>
-                              {openDropdownId === user.id && (
-                                <div className="flex flex-col absolute bg-white dark:bg-slate-800 border dark:border-slate-700 mt-2 space-y-2 p-2">
-                                  <button
-                                    onClick={() => handleDisplay(user.id)}
-                                    className="text-green-600 hover:underline focus:outline-none"
-                                  >
-                                    Display
-                                  </button>
-                                  <button
-                                    onClick={() => handleEdit(user.userId)}
-                                    className="text-indigo-600 hover:underline focus:outline-none"
-                                  >
-                                    Edit
-                                  </button>
-                                  <button
-                                    onClick={() => handleDelete(user.userId)}
-                                    className="text-red-600 hover:underline focus:outline-none"
-                                  >
-                                    Delete
-                                  </button>
-                                  
-                                </div>
-                              )}
-                            </div> */}
                             <EditMenu align="right" className="relative inline-flex">
     <li>
       <Link onClick={() => handleDisplay(user._id)} className="font-medium text-sm text-green-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-slate-200 flex py-1 px-3" to="#0">
@@ -220,6 +185,11 @@ const user = () => {
     <li>
       <Link onClick={() => handleDelete(user._id)} className="font-medium text-sm text-rose-500 hover:text-rose-600 flex py-1 px-3" to="#0">
         Delete
+      </Link>
+    </li>
+    <li>
+      <Link className="font-medium text-sm text-black-500 hover:text-black-600 flex py-1 px-3" to="#0">
+        Balance
       </Link>
     </li>
   </EditMenu>

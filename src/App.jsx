@@ -14,7 +14,7 @@ import Astrologer from './pages/AstrologerManagement/AstrologerOverviewPage'
 import AstrologerSchedule from './pages/AstrologerSchedulePage';
 import AstrologerPayoutManagement from './pages/AstrologerPayout'
 import SupportTickets from './pages/AstrologerManagement/supportsTicketsAst';
-import Earning from './pages/FinanceManagement/earning';
+import Earning from './pages/FinanceManagement/Earning';
 import PaymentGateWay from './pages/FinanceManagement/PaymentGateWay';
 import TransactionDetails from './pages/FinanceManagement/TransactionDetails';
 import Reporting from './pages/FinanceManagement/Reporting';

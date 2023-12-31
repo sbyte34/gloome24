@@ -10,14 +10,14 @@ const AddPage = ({ closeModal }) => {
   const [error, setError] = useState(null);
 
   const [astrologerData, setAstrologerData] = useState({
-    email: "waseemakra@gmail.com",
-    name: "waseem",
-    phone_number: "345654322222",
-    specialization: "vastu sashtra",
-    YearsOfExperience: 3,
-    Rating: "3",
-    bio:"my name is khan",
-    images:"images"
+    email: "",
+    name: "",
+    phone_number: "",
+    specialization: "",
+    YearsOfExperience: null,
+    Rating: "",
+    bio:"",
+    images:""
 
     });
 
