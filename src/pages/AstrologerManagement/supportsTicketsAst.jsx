@@ -7,9 +7,7 @@ const SupportTickets = () => {
 
   // Placeholder data for support tickets
   const tickets = [
-    { id: 1, user: 'John Doe', subject: 'Issue with account login', status: 'Open', timestamp: '2023-01-01T08:30:00' },
-    { id: 2, user: 'Jane Doe', subject: 'Billing inquiry', status: 'Pending', timestamp: '2023-01-02T14:45:00' },
-    { id: 3, user: 'Alice Smith', subject: 'Technical problem with the app', status: 'Closed', timestamp: '2023-01-03T10:15:00' },
+
     // Add more ticket entries as needed
   ];
 

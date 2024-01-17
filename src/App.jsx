@@ -12,7 +12,10 @@ import Activity from './pages/UserManagement/activityLogs';
 import Support from './pages/UserManagement/supportTickets';
 import Astrologer from './pages/AstrologerManagement/AstrologerOverviewPage'
 import AstrologerSchedule from './pages/AstrologerSchedulePage';
+import AstrologerWallet from './pages/AstrologerManagement/AstrologerWallet';
+import AstrologerKYC from './pages/AstrologerManagement/AstrologerKYC';
 import AstrologerPayoutManagement from './pages/AstrologerPayout'
+import AstrologerRate from './pages/AstrologerManagement/AstrologerRate';
 import SupportTickets from './pages/AstrologerManagement/supportsTicketsAst';
 import Earning from './pages/FinanceManagement/Earning';
 import PaymentGateWay from './pages/FinanceManagement/PaymentGateWay';
@@ -25,6 +28,9 @@ import OffersDiscounts from './pages/ServiceManagement/OffersDiscounts';
 import OrderManagement from './pages/E-CommerceManagement/OrderManagement';
 import ProductManagement from './pages/E-CommerceManagement/ProductManagement';
 import PayRefund from './pages/E-CommerceManagement/PayRefund';
+import Year from './pages/ContentManagement/Year';
+import Reports from './pages/ContentManagement/Reports';
+import Blog from './pages/ContentManagement/Blog';
 
 function App() {
 
@@ -42,12 +48,15 @@ function App() {
         <Route exact path="/" element={<Login />} />
         <Route exact path="/dashboard" element={<Dashboard />} />
         <Route exact path="/user" element={<User />} />
-        <Route exact path="/userwallet" element={<Userwallet />} />
+        <Route exact path="/userwallet/*" element={<Userwallet />} />
         <Route exact path="/activity" element={<Activity />} />
         <Route exact path="/support" element={<Support />} />
         <Route exact path="/astrologer/*" element={<Astrologer />} />
         <Route exact path="/astrologerschedule" element={<AstrologerSchedule/>} />
+        <Route exact path="/astrologerwallet" element={<AstrologerWallet />} />
         <Route exact path="/astrologerpayout" element={<AstrologerPayoutManagement/>} />
+        <Route exact path="/astrologerrate" element={<AstrologerRate/>} />
+        <Route exact path="/astrologerkyc" element={<AstrologerKYC/>} />
         <Route exact path="/supportTickets" element={<SupportTickets/>} />
         <Route exact path="/earning" element={<Earning/>} />
         <Route exact path="/paymentgateway" element={<PaymentGateWay/>} />
@@ -60,6 +69,9 @@ function App() {
         <Route exact path="/ordermanagement" element={<OrderManagement/>} />
         <Route exact path="/productmanagement" element={<ProductManagement/>} />
         <Route exact path="/payrefund" element={<PayRefund/>} />
+        <Route exact path="/year" element={<Year/>} />
+        <Route exact path="/reports" element={<Reports/>} />
+        <Route exact path="/blog" element={<Blog/>} />
 
       </Routes>
     </>

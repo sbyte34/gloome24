@@ -5,8 +5,12 @@ import Header from '../partials/Header';
 import DashboardCard01 from '../partials/dashboard/DashboardCard01';
 import DashboardCard02 from '../partials/dashboard/DashboardCard02';
 import DashboardCard03 from '../partials/dashboard/DashboardCard03';
-import DashboardCard12 from '../partials/dashboard/DashboardCard12';
+import Card06 from '../partials/dashboard/Card06';
 import WelcomeBanner from '../partials/dashboard/WelcomeBanner';
+import Card04 from '../partials/dashboard/Card04';
+import Card05 from '../partials/dashboard/Card05';
+import DashboardCard12 from '../partials/dashboard/DashboardCard12';
+import Card07 from '../partials/dashboard/Card07';
 
 function Dashboard() {
 
@@ -57,11 +61,21 @@ function Dashboard() {
             <div className="grid grid-cols-12 gap-6">
 
               {/* Line chart (Acme Plus) */}
+              {/* Line chart (Acme Advanced) */}
+              <Card04 />
+              {/* Line chart (Acme Advanced) */}
               <DashboardCard01 />
               {/* Line chart (Acme Advanced) */}
               <DashboardCard02 />
-              {/* Line chart (Acme Professional) */}
+              {/* Line chart (Acme Advanced) */}
+              <Card07 />
+              {/* Line chart (Acme Advanced) */}
+              <Card05 />
+               {/* Line chart (Acme Advanced) */}
               <DashboardCard03 />
+              {/* Line chart (Acme Advanced) */}
+              {/* Line chart (Acme Professional) */}
+              <Card06 />
               <DashboardCard12 />
             
               

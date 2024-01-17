@@ -6,7 +6,7 @@ import Modal from 'react-modal';
 import Sidebar from '../../partials/Sidebar';
 import Header from '../../partials/Header';
 import FilterButton from '../../components/DropdownFilter';
-import Datepicker from '../../components/Datepicker'; 
+import Datepicker from '../../components/Datepicker';
 // import { fetchData } from './userApi';
 import AddButton from '../UserManagement/AddButton';
 import EditMenu from '../../components/DropdownEditMenu';
@@ -135,11 +135,8 @@ const user = () => {
                           <div className="font-semibold text-center">Age</div>
                         </th>
                         <th className="p-2">
-                          <div className="font-semibold text-center">City</div>
-                        </th>
-                        <th className="p-2">
                           <div className='front-semibold text-cebter'>Gender</div>
-                          </th>
+                        </th>
                         <th className="p-2">
                           <div className="font-semibold text-center">Actions</div>
                         </th>
@@ -165,34 +162,26 @@ const user = () => {
                             <div className="text-center">{user.age}</div>
                           </td>
                           <td className="p-2">
-                            <div className="text-center">{user.city}</div>
-                          </td>
-                          <td className="p-2">
                             <div className="text-center">{user.gender}</div>
                           </td>
                           <td className="p-2" align="center">
                             <EditMenu align="right" className="relative inline-flex">
-    <li>
-      <Link onClick={() => handleDisplay(user._id)} className="font-medium text-sm text-green-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-slate-200 flex py-1 px-3" to="#0">
-        Display
-      </Link>
-    </li>
-    <li>
-      <Link onClick={() => handleEdit(user._id)} className="font-medium text-sm text-indigo-600 hover:text-rose-600 flex py-1 px-3" to="#0">
-        Edit
-      </Link>
-    </li>
-    <li>
-      <Link onClick={() => handleDelete(user._id)} className="font-medium text-sm text-rose-500 hover:text-rose-600 flex py-1 px-3" to="#0">
-        Delete
-      </Link>
-    </li>
-    <li>
-      <Link className="font-medium text-sm text-black-500 hover:text-black-600 flex py-1 px-3" to="#0">
-        Balance
-      </Link>
-    </li>
-  </EditMenu>
+                              <li>
+                                <Link onClick={() => handleDisplay(user._id)} className="font-medium text-sm text-green-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-slate-200 flex py-1 px-3" to="#0">
+                                  Display
+                                </Link>
+                              </li>
+                              <li>
+                                <Link onClick={() => handleEdit(user._id)} className="font-medium text-sm text-indigo-600 hover:text-rose-600 flex py-1 px-3" to="#0">
+                                  Edit
+                                </Link>
+                              </li>
+                              <li>
+                                <Link onClick={() => handleDelete(user._id)} className="font-medium text-sm text-rose-500 hover:text-rose-600 flex py-1 px-3" to="#0">
+                                  Block
+                                </Link>
+                              </li>
+                            </EditMenu>
                           </td>
                         </tr>
                       ))}

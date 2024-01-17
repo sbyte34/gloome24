@@ -42,7 +42,7 @@ const ProductManagement = () => {
   };
 
   const handleDeleteProduct = async () => {
-    console.log('Product Delated');
+    console.log('Product Deleted');
     forceUpdate();
   };
 
@@ -97,37 +97,40 @@ const ProductManagement = () => {
                   </button>
                 </div>
               </div>
-              <div className="flex flex-wrap">
-                {products.map((product) => (
-                  <div
-                    key={product._id}
-                    className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-4 cursor-pointer"
-                    style={{ height: '400px' }}
-                    onClick={() => handleProductClick(product)}
-                  >
-                    <div className="bg-white rounded-md shadow-md p-4 h-full flex flex-col justify-between">
-                      <img src={product.images[0]} alt={product.name} className="w-full h-32 object-cover mb-2" />
-                      <div>
-                        <h2 className="text-lg font-semibold mb-2">{product.name}</h2>
-                        <p
-                          className="text-sm text-gray-600 mb-2"
-                          style={{
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            display: '-webkit-box',
-                            WebkitBoxOrient: 'vertical',
-                            WebkitLineClamp: 2,
-                          }}
-                        >
-                          {product.description}
-                        </p>
-                        <p className="text-md text-black-500 font-semibold mb-4">
-                          ₹{product.selling_price} <br /> <del>₹{product.MRP}</del> {product.discount}% (Off)
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+              <div className="overflow-x-auto">
+                <table className="min-w-full bg-white border border-gray-300">
+                  <thead>
+                    <tr>
+                      <th className="py-2 px-4 border-b">Image</th>
+                      <th className="py-2 px-4 border-b">Name</th>
+                      <th className="py-2 px-4 border-b">Description</th>
+                      <th className="py-2 px-4 border-b">Selling Price</th>
+                      <th className="py-2 px-4 border-b">Discount</th>
+                      <th className="py-2 px-4 border-b">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {products.map((product) => (
+                      <tr key={product._id}>
+                        <td className="py-2 px-4 border-b">
+                          <img src={product.images[0]} alt={product.name} className="w-16 h-16 object-cover" />
+                        </td>
+                        <td className="py-2 px-4 border-b">{product.name}</td>
+                        <td className="py-2 px-4 border-b">{product.description}</td>
+                        <td className="py-2 px-4 border-b">₹{product.selling_price}</td>
+                        <td className="py-2 px-4 border-b">{product.discount}%</td>
+                        <td className="py-2 px-4 border-b">
+                          <button
+                            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                            onClick={() => handleProductClick(product)}
+                          >
+                            View
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </main>
@@ -135,14 +138,13 @@ const ProductManagement = () => {
       </div>
       {isAddPageOpen && <AddPage onClose={() => setIsAddPageOpen(false)} onCreateProduct={handleCreateProduct} />}
       {selectedProduct && (
-  <ProductDetailsModal
-    product={selectedProduct}
-    onClose={handleCloseProductDetails}
-    onDelete={handleDeleteProduct}
-    onUpdate={() => forceUpdate()}
-  />
-)}
-
+        <ProductDetailsModal
+          product={selectedProduct}
+          onClose={handleCloseProductDetails}
+          onDelete={handleDeleteProduct}
+          onUpdate={() => forceUpdate()}
+        />
+      )}
     </>
   );
 };

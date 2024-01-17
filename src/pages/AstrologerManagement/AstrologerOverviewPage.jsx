@@ -56,7 +56,7 @@ const AstrologerOverviewPage = () => {
         setOpenDropdownId(null)
         setEditableData(userId)
         setIsEditable(true)
-        
+
     };
 
     const handleDelete = (userId) => {
@@ -80,14 +80,14 @@ const AstrologerOverviewPage = () => {
         <div className="flex h-screen overflow-hidden">
             {isEditable ? (
                 <Modal
-                isOpen={isEditable}
-                onRequestClose={closeModal}
-                contentLabel="Edit Astrologer Page Modal"
-                className="modal" // Use the custom modal class
-                overlayClassName="modal-overlay"
-            >
-                <EditAstrologerData editableData={editableData} modalClose={() => setIsEditable(false)}/>
-            </Modal>
+                    isOpen={isEditable}
+                    onRequestClose={closeModal}
+                    contentLabel="Edit Astrologer Page Modal"
+                    className="modal" // Use the custom modal class
+                    overlayClassName="modal-overlay"
+                >
+                    <EditAstrologerData editableData={editableData} modalClose={() => setIsEditable(false)} />
+                </Modal>
             ) : null}
             {/* Sidebar */}
             <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
@@ -140,20 +140,20 @@ const AstrologerOverviewPage = () => {
                                         <thead className="text-xs uppercase text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-700 dark:bg-opacity-50 rounded-sm">
                                             <tr>
                                                 <th className="p-2">
-                                                    <div className="font-semibold text-left">Email</div>
+                                                    <div className="font-semibold text-center">Phone Number</div>
                                                 </th>
                                                 <th className="p-2">
                                                     <div className="font-semibold text-center">Name</div>
                                                 </th>
                                                 <th className="p-2">
-                                                    <div className="font-semibold text-center">Phone Number</div>
+                                                    <div className="font-semibold text-center">Email</div>
                                                 </th>
                                                 <th className="p-2">
                                                     <div className="font-semibold text-center">specialization</div>
                                                 </th>
-                                                
+
                                                 <th className="p-2">
-                                                    <div className="font-semibold text-center">YearsOfExperience
+                                                    <div className="font-semibold text-center">Experience
                                                     </div>
                                                 </th>
                                                 <th className="p-2">
@@ -161,19 +161,23 @@ const AstrologerOverviewPage = () => {
                                                     </div>
                                                 </th>
                                                 <th className="p-2">
-                                                    <div className="font-semibold text-center">biography
-                                                    </div>
-                                                </th>
-                                                <th className="p-2">
                                                     <div className="font-semibold text-center">createdAt
                                                     </div>
                                                 </th>
                                                 <th className="p-2">
-                                                    <div className="font-semibold text-center">updatedAt
+                                                    <div className="font-semibold text-center">KYC Status
                                                     </div>
                                                 </th>
                                                 <th className="p-2">
-                                                    <div className="font-semibold text-center">Actions
+                                                    <div className="font-semibold text-center">Bank Details
+                                                    </div>
+                                                </th>
+                                                <th className="p-2">
+                                                    <div className="font-semibold text-center">Block
+                                                    </div>
+                                                </th>
+                                                <th className="p-2">
+                                                    <div className="font-semibold text-center">Edit
                                                     </div>
                                                 </th>
                                             </tr>
@@ -183,62 +187,58 @@ const AstrologerOverviewPage = () => {
                                             {/* Rows dynamically generated based on data */}
                                             {data.map((user, index) => (
                                                 <tr key={index}>
-                                                <td className="p-2">
-                                                    <div className="flex items-center">
-                                                        <div className="text-slate-800 dark:text-slate-100">{user.data.email}</div>
-                                                    </div>
-                                                </td>
-                                                <td className="p-2">
-                                                    <div className="text-center">{user.data.name}</div>
-                                                </td>
-                                                <td className="p-2">
-                                                    <div className="text-center">{user.data.phone_number}</div>
-                                                </td>
-                                                <td className="p-2">
-                                                    <div className="text-center">{user.data.specialization}</div>
-                                                </td>
-                                                <td className="p-2">
-                                                    <div className="text-center">{user.data.YearsOfExperience}</div>
-                                                </td>
-                                                <td className="p-2">
-                                                    <div className="text-center">{user.data.Rating}</div>
-                                                </td>
-                                                <td className="p-2">
-                                                    <div className="text-center">{user.data.bio}</div>
-                                                </td>
-                                                <td className="p-2">
-                                                    <div className="text-center">{user.data.createdAt}</div>
-                                                </td>
-                                                <td className="p-2">
-                                                    <div className="text-center">{user.data.updatedAt}</div>
-                                                </td>
-                                                {/* <td className="p-2">
-                                                    <div className="flex justify-center space-x-2"> */}
-                                                        {/* Your other actions here */}
-                                                    {/* </div>
-                                                </td> */}
                                                     <td className="p-2">
-                                                        <div className="flex justify-center space-x-2">
-                                                            <div className="cursor-pointer" onClick={() => handleDropdownToggle(user._id)}>
-                                                                                                                           <EditMenu align="right" className="relative inline-flex">
-    <li>
-      <Link onClick={() => handleDisplay(user._id)} className="font-medium text-sm text-green-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-slate-200 flex py-1 px-3" to="#0">
-        Display
-      </Link>
-    </li>
-    <li>
-      <Link onClick={() => handleEdit(user)} className="font-medium text-sm text-indigo-600 hover:text-rose-600 flex py-1 px-3" to="#0">
-        Edit
-      </Link>
-    </li>
-    <li>
-      <Link onClick={() => handleDelete(user._id)} className="font-medium text-sm text-rose-500 hover:text-rose-600 flex py-1 px-3" to="#0">
-        Delete
-      </Link>
-    </li>
-  </EditMenu>
-                                                            </div>
+                                                        <div className="flex items-center">
+                                                            <div className="text-slate-800 dark:text-slate-100">{user.data.phone_number}</div>
                                                         </div>
+                                                    </td>
+                                                    <td className="p-2">
+                                                        <div className="text-center">{user.data.name}</div>
+                                                    </td>
+                                                    <td className="p-2">
+                                                        <div className="text-center">{user.data.email}</div>
+                                                    </td>
+                                                    <td className="p-2">
+                                                        <div className="text-center">{user.data.specialization}</div>
+                                                    </td>
+                                                    <td className="p-2">
+                                                        <div className="text-center">{user.data.YearsOfExperience}</div>
+                                                    </td>
+                                                    <td className="p-2">
+                                                        <div className="text-center">{user.data.avgRating}</div>
+                                                    </td>
+                                                    <td className="p-2">
+                                                        {/* <div className="text-center">{user.data.createdAt}</div> */}
+                                                        <div className="text-center">{user.data.createdAt.slice(0, 10)}</div>
+                                                    </td>
+                                                    <td className="p-2">
+                                                        {/* kyc value is boolean */}
+                                                        <div className="text-center">
+                                                            {user.data.kyc ? (
+                                                                <span className="text-green-500">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="green">
+                                                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 18 21 6l-1.41-1.41L9 16.17z" />
+                                                                    </svg>
+
+                                                                </span>
+                                                            ) : (
+                                                                <span className="text-red-500">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="red">
+    <path d="M6.71 5.29L12 10.59l5.29-5.3 1.41 1.41L13.41 12l5.3 5.29-1.41 1.41L12 13.41l-5.29 5.3-1.41-1.41L10.59 12 5.29 6.71 6.7 5.3z"/>
+</svg>
+
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    </td>
+                                                    <td className="p-2">
+                                                        <div className="text-center">{user.data.bankdetails}</div>
+                                                    </td>
+                                                    <td className="p-2">
+                                                        <div className="text-center">{user.data.block}</div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="text-center" onClick={handleEdit}></div>
                                                     </td>
                                                 </tr>
                                             ))}
@@ -254,4 +254,4 @@ const AstrologerOverviewPage = () => {
     )
 }
 
-export default AstrologerOverviewPage
+export default AstrologerOverviewPage;

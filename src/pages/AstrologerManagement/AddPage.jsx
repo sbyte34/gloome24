@@ -148,37 +148,6 @@ if (error) {
               required
             />
           </div>
-          {/* <div className="mb-1">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="age">
-              age
-            </label>
-            <input
-              type="number"
-              id="age"
-              name="age"
-              value={astrologerData.age}
-              onChange={handleChange}
-              className="border rounded-md w-full py-2 px-3"
-              required
-            />
-          </div> */}
-
-          {/* <div className="mb-1">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="city">
-              city
-            </label>
-            <input
-              type="text"
-              id="city"
-              name="city"
-              value={astrologerData.city}
-              onChange={handleChange}
-              className="border rounded-md w-full py-2 px-3"
-              required
-            />
-          </div> */}
-
-          {/* Add other input fields similarly */}
 
           <button
             type="submit"
