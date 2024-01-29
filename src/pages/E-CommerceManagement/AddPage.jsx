@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const api = axios.create({
@@ -6,6 +6,21 @@ const api = axios.create({
 });
 
 const AddPage = ({ onClose, onCreateProduct }) => {
+  const [catogory, setCatogory] = useState([]);
+
+  useEffect(() => {
+    const fetchCatogory = async () => {
+      try {
+        const response = await axios.get('http://ec2-13-233-152-110.ap-south-1.compute.amazonaws.com:5000/product/getCatogory/?type=mallProduct');
+        setCatogory(response.data.payload);
+      } catch (error) {
+        console.error('Error fetching category:', error.message);
+      }
+    };
+
+    fetchCatogory();
+  }, []);
+
   const [formData, setFormData] = useState({
     name: '',
     selling_price: '',
@@ -13,36 +28,23 @@ const AddPage = ({ onClose, onCreateProduct }) => {
     quantity: '',
     description: '',
     images: null,
-    discount: 0,
   });
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
 
     if (type === 'file') {
+      const selectedFiles = files.length > 1 ? files : files[0];
+
       setFormData((prevData) => ({
         ...prevData,
-        [name]: files[0],
+        [name]: selectedFiles,
       }));
     } else {
-      const sellingPrice = name === 'selling_price' ? parseFloat(value) : formData.selling_price;
-      const MRP = name === 'MRP' ? parseFloat(value) : formData.MRP;
-
-      if (!isNaN(sellingPrice) && !isNaN(MRP)) {
-        const discount = MRP && sellingPrice ? ((MRP - sellingPrice) / MRP) * 100 : 0;
-
-        setFormData((prevData) => ({
-          ...prevData,
-          [name]: value,
-          discount: isNaN(discount) ? 0 : parseFloat(discount.toFixed(2)),
-        }));
-      } else {
-        setFormData((prevData) => ({
-          ...prevData,
-          [name]: value,
-          discount: 0,
-        }));
-      }
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
     }
   };
 
@@ -69,7 +71,7 @@ const AddPage = ({ onClose, onCreateProduct }) => {
         formDataWithImage.append('images', formData.images);
       }
 
-      const accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1N2M2NGRjMGU3MWYxYzVmNGUwM2RiMSIsImVtYWlsIjoid2FzZWVtQGdtYWlsLmNvbSIsImlhdCI6MTcwMzc4MjQwMH0.ItjP8uNIPU2kqa51GTmbFb6pk7_a5jSCi0O4x5k4d3I'; // Replace with your actual access token
+      const accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1N2M2NGRjMGU3MWYxYzVmNGUwM2RiMSIsImVtYWlsIjoid2FzZWVtQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcwNjM3ODM5NX0.2uCe46R5KPij2NHIeSz__sveq6FBv_r0mKP7ogJ8xHc';
 
       const response = await api.post('/product/createproducts', formDataWithImage, {
         headers: {
@@ -77,8 +79,6 @@ const AddPage = ({ onClose, onCreateProduct }) => {
           'Content-Type': 'multipart/form-data',
         },
       });
-
-      // console.log(response.status);
 
       if (response.status === 200) {
         const data = response.data;
@@ -103,10 +103,9 @@ const AddPage = ({ onClose, onCreateProduct }) => {
     }
   };
 
-
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex items-center justify-center">
-      <div className="bg-white p-8 max-w-md w-full rounded-md">
+      <div className="bg-white p-8 max-w-md w-full rounded-md shadow-md">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold mb-4">Add New Product</h2>
           <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
@@ -132,9 +131,29 @@ const AddPage = ({ onClose, onCreateProduct }) => {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="border rounded-md w-full py-2 px-3"
+              className="border rounded-md w-full py-2 px-3 focus:outline-none focus:border-blue-500"
               required
             />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="category">
+              Category
+            </label>
+            <select
+              id="category"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              className="border rounded-md w-full py-2 px-3 focus:outline-none focus:border-blue-500"
+              required
+            >
+              <option value="">Select Category</option>
+              {catogory && catogory.map((catogoryItem) => (
+                <option key={catogoryItem._id} value={catogoryItem._id}>
+                  {catogoryItem.categoryName}
+                </option>
+              ))}
+            </select>
           </div>
           {/* Other form fields (similar structure) */}
           <div className="mb-4">
@@ -147,7 +166,7 @@ const AddPage = ({ onClose, onCreateProduct }) => {
               name="selling_price"
               value={formData.selling_price}
               onChange={handleChange}
-              className="border rounded-md w-full py-2 px-3"
+              className="border rounded-md w-full py-2 px-3 focus:outline-none focus:border-blue-500"
               required
             />
           </div>
@@ -161,7 +180,7 @@ const AddPage = ({ onClose, onCreateProduct }) => {
               name="MRP"
               value={formData.MRP}
               onChange={handleChange}
-              className="border rounded-md w-full py-2 px-3"
+              className="border rounded-md w-full py-2 px-3 focus:outline-none focus:border-blue-500"
               required
             />
           </div>
@@ -175,7 +194,7 @@ const AddPage = ({ onClose, onCreateProduct }) => {
               name="quantity"
               value={formData.quantity}
               onChange={handleChange}
-              className="border rounded-md w-full py-2 px-3"
+              className="border rounded-md w-full py-2 px-3 focus:outline-none focus:border-blue-500"
               required
             />
           </div>
@@ -188,7 +207,7 @@ const AddPage = ({ onClose, onCreateProduct }) => {
               name="description"
               value={formData.description}
               onChange={handleChange}
-              className="border rounded-md w-full py-2 px-3"
+              className="border rounded-md w-full py-2 px-3 focus:outline-none focus:border-blue-500"
             />
           </div>
           <div className="mb-4">
@@ -201,25 +220,13 @@ const AddPage = ({ onClose, onCreateProduct }) => {
               name="images"
               accept="image/*"
               onChange={handleChange}
-              className="border rounded-md w-full py-2 px-3"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="discount">
-              Discount (%)
-            </label>
-            <input
-              type="text"
-              id="discount"
-              name="discount"
-              value={formData.discount}
-              className="border rounded-md w-full py-2 px-3"
-              readOnly
+              className="border rounded-md w-full py-2 px-3 focus:outline-none focus:border-blue-500"
+              multiple
             />
           </div>
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue"
           >
             Create Product
           </button>

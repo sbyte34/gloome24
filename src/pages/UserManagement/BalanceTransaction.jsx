@@ -1,28 +1,48 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { FaTimes } from 'react-icons/fa'; // Assuming you have imported FontAwesome icons
+import { FaTimes } from 'react-icons/fa';
 
-const BalanceTransaction = ({ userId, closeModal }) => {
-  const [balanceOperation, setBalanceOperation] = useState('credit');
+const BalanceTransaction = ({ userId, closeModal, balance }) => {
   const [amount, setAmount] = useState('');
+  const [balanceOperation, setBalanceOperation] = useState('credit');
+  const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1N2M2NGRjMGU3MWYxYzVmNGUwM2RiMSIsImVtYWlsIjoid2FzZWVtQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcwNjU2Mjg5OX0.XN0oYm-aILTalPOMGHyIaI6HvmOHQvombL6xv67fXkQ";
 
   const handleBalanceSubmit = async () => {
     try {
-      const response = await axios.post("http://ec2-13-233-152-110.ap-south-1.compute.amazonaws.com:5000/auth/updateProfile", {
-        userId: userId,
-        operation: balanceOperation,
-        amount: parseFloat(amount),
+      const parsedAmount = parseFloat(amount);
+      
+      if (isNaN(parsedAmount) || parsedAmount <= 0) {
+        console.error('Please enter a valid positive amount.');
+        return;
+      }
+
+      // Calculate the adjusted amount based on the selected operation
+      const adjustedAmount = (balanceOperation === 'credit') ? parsedAmount+balance : balance-parsedAmount;
+
+      // Construct the request payload
+      const requestData = {
+        amount: adjustedAmount,
+        userID: userId,
+      };
+
+      // Make the API call
+      const response = await axios.post('http://ec2-13-233-152-110.ap-south-1.compute.amazonaws.com:5000/admin/updateUserBalance', requestData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
       });
 
-      console.log(response.data);
-      // You may want to update the user data after a successful balance operation
-      // Example: refetch user data
-      // fetchDataFromApi();
-    } catch (error) {
-      console.error('Error updating profile:', error.message);
-    } finally {
+      // Handle the response as needed
+      console.log('API Response:', response.data);
+
+      // Close the modal or perform other actions after a successful request
       closeModal();
-      setAmount('');
+      // update the balance
+      window.location.reload();
+    } catch (error) {
+      console.error('Error submitting balance:', error.message);
+      // Handle error, e.g., show an error message to the user
     }
   };
 
@@ -33,10 +53,18 @@ const BalanceTransaction = ({ userId, closeModal }) => {
           className="text-gray-500 hover:text-gray-700"
           onClick={closeModal}
         >
-          <FaTimes /> {/* FontAwesome 'X' icon */}
+          <FaTimes />
         </button>
       </div>
-      <h2 className="text-xl font-semibold mb-4">Balance Operation</h2>
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700">Amount</label>
+        <input
+          type="number"
+          className="mt-1 p-2 border rounded-md w-full"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
+      </div>
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700">Operation</label>
         <select
@@ -47,15 +75,6 @@ const BalanceTransaction = ({ userId, closeModal }) => {
           <option value="credit">Credit</option>
           <option value="debit">Debit</option>
         </select>
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Amount</label>
-        <input
-          type="number"
-          className="mt-1 p-2 border rounded-md w-full"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
       </div>
       <div className="flex justify-end">
         <button

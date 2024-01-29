@@ -7,7 +7,7 @@ import BalanceTransaction from './BalanceTransaction';
 
 Modal.setAppElement('#root'); // replace '#root' with the ID or class of your root element
 
-const AstrologerWallet = () => {
+const PayoutHistory = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -73,7 +73,7 @@ const AstrologerWallet = () => {
 
             <div className="col-span-full xl:col-span-8 bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
               <header className="px-5 py-4 border-b border-slate-100 dark:border-slate-700">
-                <h2 className="font-semibold text-slate-800 dark:text-slate-100">All Astrologer</h2>
+                <h2 className="font-semibold text-slate-800 dark:text-slate-100">Astrologer Payout History</h2>
               </header>
               <div className="p-3">
                 <div className="overflow-x-auto">
@@ -81,22 +81,22 @@ const AstrologerWallet = () => {
                     <thead className="text-xs uppercase text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-700 dark:bg-opacity-50 rounded-sm">
                       <tr>
                         <th className="p-2">
-                          <div className="font-semibold text-left">Name</div>
+                          <div className="font-semibold text-left">Date</div>
                         </th>
                         <th className="p-2">
-                          <div className="font-semibold text-center">Email</div>
+                          <div className="font-semibold text-center">Number</div>
                         </th>
                         <th className="p-2">
-                          <div className="font-semibold text-center">Phone Number</div>
+                          <div className="font-semibold text-center">Amount</div>
                         </th>
                         <th className="p-2">
-                          <div className="font-semibold text-center">Balance</div>
+                          <div className="font-semibold text-center">Payment Mode</div>
                         </th>
                         <th className="p-2">
-                          <div className="font-semibold text-center">Actions</div>
+                          <div className="font-semibold text-center">Transaction Id</div>
                         </th>
                         <th className="p-2">
-                          <div className='font-semibold text-center'>Details</div>
+                          <div className='font-semibold text-center'>Status</div>
                         </th>
                       </tr>
                     </thead>
@@ -105,34 +105,23 @@ const AstrologerWallet = () => {
                         <tr key={index}>
                           <td className="p-2">
                             <div className="flex items-center">
-                              <div className="text-slate-800 dark:text-slate-100">{astrologerData.data.name}</div>
+                              <div className="text-slate-800 dark:text-slate-100">{}</div>
                             </div>
                           </td>
                           <td className="p-2">
-                            <div className="text-center">{astrologerData.data.email}</div>
+                            <div className="text-center">{}</div>
                           </td>
                           <td className="p-2">
-                            <div className="text-center">{astrologerData.data.phone_number}</div>
+                            <div className="text-center">{}</div>
                           </td>
                           <td className="p-2">
-                            <div className="text-center">{astrologerData.data.amount}</div>
+                            <div className="text-center">{}</div>
                           </td>
                           <td className="p-2" align="center">
-                            <button className="btn bg-red-500 hover:bg-red-600 text-white" onClick={() => handleBalance(astrologerData.data._id)}>
-                              <svg className="w-4 h-4 fill-current opacity-50 flex-shrink-0 ml-2 -mr-1" viewBox="0 0 24 24">
-                                <path d="M12 19l7-7 1.4 1.4-7 7-1.4-1.4zM5 12h2"></path>
-                                <path d="M21 10v2"></path>
-                                <path d="M3 6v12a2 2 0 0 0 2 2h12"></path>
-                              </svg>
-                            </button>
+                          <div className="text-center">{}</div>
                           </td>
                           <td className="p-2" align="center">
-                            <button className="btn bg-green-500 hover.bg-green-600 text-white" onClick={() => handleDisplay(astrologerData.data._id)}>
-                              Details
-                              <svg className="w-4 h-4 fill-current opacity-50 flex-shrink-0 ml-2 -mr-1" viewBox="0 0 16 16">
-                                <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                              </svg>
-                            </button>
+                          <div className="text-center">{}</div>
                           </td>
                         </tr>
                       ))}
@@ -148,4 +137,4 @@ const AstrologerWallet = () => {
   );
 }
 
-export default AstrologerWallet;
+export default PayoutHistory;
