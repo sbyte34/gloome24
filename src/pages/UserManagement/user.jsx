@@ -22,8 +22,9 @@ const User = () => {
 
   const fetchDataFromApi = async () => {
     try {
-      const result = await axios.get("http://ec2-13-233-152-110.ap-south-1.compute.amazonaws.com:5000/user/findAll");
-      setData(result.data.payload.account);
+      // const result = await axios.get("http://ec2-13-233-152-110.ap-south-1.compute.amazonaws.com:5000/user/findAll");
+      const result = await axios.get("http://ec2-13-233-113-80.ap-south-1.compute.amazonaws.com:5000/admin/getAllusers");
+      setData(result.data);
     } catch (error) {
       setError(error);
     } finally {
@@ -126,7 +127,10 @@ const User = () => {
                     <thead className="text-xs uppercase text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-700 dark:bg-opacity-50 rounded-sm">
                       <tr>
                         <th className="p-2">
-                          <div className="font-semibold text-left">Name</div>
+                          <div className="font-semibold text-left">First_name</div>
+                        </th>
+                        <th className="p-2">
+                          <div className="font-semibold text-left">Last_name</div>
                         </th>
                         <th className="p-2">
                           <div className="font-semibold text-center">Email</div>
@@ -135,10 +139,7 @@ const User = () => {
                           <div className="font-semibold text-center">Phone Number</div>
                         </th>
                         <th className="p-2">
-                          <div className="font-semibold text-center">Age</div>
-                        </th>
-                        <th className="p-2">
-                          <div className="front-semibold text-center">Gender</div>
+                          <div className="font-semibold text-center">DOB</div>
                         </th>
                         <th className="p-2">
                           <div className="font-semibold text-center">Actions</div>
@@ -150,20 +151,20 @@ const User = () => {
                         <tr key={index}>
                           <td className="p-2">
                             <div className="flex items-center">
-                              <div className="text-slate-800 dark:text-slate-100">{user.name}</div>
+                              <div className="text-slate-800 dark:text-slate-100">{user.First_name}</div>
                             </div>
                           </td>
                           <td className="p-2">
-                            <div className="text-center">{user.email}</div>
+                            <div className="text-center">{user.Last_name}</div>
+                          </td>
+                          <td className="p-2">
+                            <div className="text-center">{user.Email}</div>
                           </td>
                           <td className="p-2">
                             <div className="text-center">{user.phone_number}</div>
                           </td>
                           <td className="p-2">
-                            <div className="text-center">{user.age}</div>
-                          </td>
-                          <td className="p-2">
-                            <div className="text-center">{user.gender}</div>
+                            <div className="text-center">{user.DOB}</div>
                           </td>
                           <td className="p-2" align="center">
                             <EditMenu align="right" className="relative inline-flex">
